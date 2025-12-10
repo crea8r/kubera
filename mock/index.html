@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubera - Budget & Operations Management</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Main App -->
+    <div id="app-screen" class="screen active">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <button class="menu-btn">☰</button>
+                <span class="app-name">KUBERA</span>
+                <select id="workspace-selector" class="workspace-selector">
+                    <!-- Populated by JS -->
+                </select>
+                <button class="btn btn-primary btn-sm" id="new-workspace-btn" style="margin-left: 10px;">+ New Budget & Operation Pair</button>
+            </div>
+            <div class="header-right">
+                <span class="user-name">Hieu Bui</span>
+                <button class="icon-btn" id="notifications-btn">🔔</button>
+                <button class="icon-btn" id="settings-btn">⚙️</button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+            <button class="nav-btn" data-view="budget">Budget</button>
+            <button class="nav-btn" data-view="operations">Operations</button>
+            <button class="nav-btn" data-view="timeline">Timeline</button>
+            <button class="nav-btn" data-view="proposals">Proposals</button>
+        </nav>
+
+        <!-- Views Container -->
+        <main class="app-content">
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view active">
+                <div class="view-header">
+                    <h2>Dashboard</h2>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Budget Overview -->
+                    <div class="card" id="budget-overview-card">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Operations Status -->
+                    <div class="card">
+                        <h3>Operations Status</h3>
+                        <div class="stat-row">
+                            <div class="stat-label">Active Operations:</div>
+                            <div class="stat-value">12</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">On Track:</div>
+                            <div class="stat-value status-good">8 ✅</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">At Risk:</div>
+                            <div class="stat-value status-warning">3 ⚠️</div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Completed:</div>
+                            <div class="stat-value">4 ✓</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                        <p class="status-warning">⚠️ Needs Attention</p>
+                        <button class="btn btn-link" data-view="operations">View Operations →</button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" id="new-budget-btn">+ New Budget</button>
+                        <button class="btn btn-secondary" id="log-activity-btn">+ Log Activity</button>
+                        <button class="btn btn-secondary" id="create-proposal-btn">+ Create Proposal</button>
+                        <button class="btn btn-secondary" id="add-operation-btn">+ Add Operation</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list" id="recent-activity">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button class="btn btn-link" data-view="timeline">View All Activity →</button>
+                </div>
+
+                <!-- Pending Approvals -->
+                <div class="card">
+                    <h3>Pending Approvals</h3>
+                    <div class="proposal-list" id="pending-approvals">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button class="btn btn-link" data-view="proposals">View All (5) →</button>
+                </div>
+            </div>
+
+            <!-- Budget View -->
+            <div id="budget-view" class="view">
+                <div class="view-header">
+                    <h2>Budget - Superteam VN 2025</h2>
+                    <div class="view-actions">
+                        <button class="btn btn-secondary">Expand All</button>
+                        <button class="btn btn-secondary">+ Add Category</button>
+                        <button class="btn btn-secondary">Export ▼</button>
+                    </div>
+                </div>
+
+                <div class="budget-summary">
+                    <span>Spent: $125,400 (28%)</span>
+                    <span>Committed: $45,000 (10%)</span>
+                    <span>Available: $280,400 (62%)</span>
+                </div>
+
+                <div class="budget-table-container">
+                    <table class="budget-table" id="budget-table">
+                        <!-- Populated by JS -->
+                    </table>
+                </div>
+            </div>
+
+            <!-- Operations View -->
+            <div id="operations-view" class="view">
+                <div class="view-header">
+                    <h2>Operations Plan</h2>
+                    <div class="view-actions">
+                        <button class="btn btn-primary" id="create-operation-btn">+ Create Operation</button>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <select>
+                        <option>All Status</option>
+                        <option>On Track</option>
+                        <option>At Risk</option>
+                        <option>Completed</option>
+                    </select>
+                    <select>
+                        <option>All Owners</option>
+                        <option>Fay</option>
+                        <option>Linh</option>
+                        <option>Sunny</option>
+                    </select>
+                </div>
+
+                <div class="operations-grid" id="operations-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Timeline View -->
+            <div id="timeline-view" class="view">
+                <div class="view-header">
+                    <h2>Activity Timeline</h2>
+                    <div class="view-actions">
+                        <button class="btn btn-primary" id="log-activity-btn2">+ Log Activity</button>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <select>
+                        <option>All Types</option>
+                        <option>Milestone</option>
+                        <option>Proposal</option>
+                        <option>KPI Update</option>
+                    </select>
+                    <select>
+                        <option>All People</option>
+                    </select>
+                    <select>
+                        <option>Last 7 days</option>
+                    </select>
+                    <input type="text" placeholder="🔍 Search...">
+                </div>
+
+                <div class="timeline" id="timeline">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Proposals View -->
+            <div id="proposals-view" class="view">
+                <div class="view-header">
+                    <h2>Spending Proposals</h2>
+                    <div class="view-actions">
+                        <button class="btn btn-primary" id="create-proposal-btn2">+ Create Proposal</button>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <select>
+                        <option>All Status</option>
+                        <option>Pending</option>
+                        <option>Approved</option>
+                        <option>Rejected</option>
+                    </select>
+                </div>
+
+                <div class="proposals-list" id="proposals-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Create Proposal -->
+    <div id="create-proposal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Spending Proposal</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="create-proposal-form">
+                    <div class="form-group">
+                        <label>Budget Category *</label>
+                        <select required>
+                            <option value="">Select category...</option>
+                            <option>O1. Startup Competition ($30,000)</option>
+                            <option>FS2. Global hack activation ($12,000)</option>
+                            <option>E1. Mentorship & Intern ($26,100)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount *</label>
+                        <input type="number" placeholder="5000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <input type="text" placeholder="Venue rental for hackathon" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Justification *</label>
+                        <textarea rows="4" placeholder="Explain why this spending is needed..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vendor/Recipient</label>
+                        <input type="text" placeholder="WeWork Vietnam">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit for Approval</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Log Activity -->
+    <div id="log-activity-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Log Activity</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="log-activity-form">
+                    <div class="form-group">
+                        <label>Activity Type *</label>
+                        <select required>
+                            <option>Milestone</option>
+                            <option>Work</option>
+                            <option>Meeting</option>
+                            <option>Decision</option>
+                            <option>Blocker</option>
+                            <option>Insight</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Title *</label>
+                        <input type="text" placeholder="Applications Closed" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea rows="4" placeholder="Describe what happened..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Link to Operation</label>
+                        <select>
+                            <option value="">None</option>
+                            <option>Climate Tech Competition</option>
+                            <option>Ambassador Program</option>
+                            <option>Global Hackathon</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Log Activity</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Create Budget Category/Item -->
+    <div id="create-budget-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Budget Item</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="create-budget-form">
+                    <div class="form-group">
+                        <label>Budget Type *</label>
+                        <select id="budget-type" required>
+                            <option value="">Select type...</option>
+                            <option value="category">Category (P, O, E, F)</option>
+                            <option value="subcategory">Subcategory (P1, O1, etc.)</option>
+                            <option value="item">Line Item</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Parent Category</label>
+                        <select id="budget-parent">
+                            <option value="">None (Top-level category)</option>
+                            <option value="P">P. Personnel</option>
+                            <option value="O">O. Outreach</option>
+                            <option value="E">E. Engage</option>
+                            <option value="F">F. Funnel</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Code</label>
+                        <input type="text" id="budget-code" placeholder="e.g., P4, O5, E2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" id="budget-name" placeholder="e.g., Marketing expenses" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description/Detail</label>
+                        <input type="text" id="budget-detail" placeholder="Brief description">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Annual Budget *</label>
+                        <input type="number" id="budget-annual" placeholder="50000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Monthly Budget</label>
+                        <input type="number" id="budget-monthly" placeholder="4166">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Person in Charge (PIC)</label>
+                        <select id="budget-pic">
+                            <option value="">Select person...</option>
+                            <option value="Hieu">Hieu</option>
+                            <option value="Linh">Linh</option>
+                            <option value="Fay">Fay</option>
+                            <option value="Sunny">Sunny</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Link to Operations (Optional) *</label>
+                        <select id="budget-linked-ops" multiple size="3">
+                            <!-- Populated by JS -->
+                        </select>
+                        <small class="text-muted">Hold Ctrl/Cmd to select multiple. Each budget line should support at least one operation.</small>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Budget Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Create Operation -->
+    <div id="create-operation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Operation Plan</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="create-operation-form">
+                    <div class="form-group">
+                        <label>Operation Code *</label>
+                        <input type="text" id="op-code" placeholder="e.g., OP-O1-Q2" required>
+                        <small class="text-muted">Format: OP-[BudgetCode]-[Period]</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Operation Name *</label>
+                        <input type="text" id="op-name" placeholder="e.g., Web3 Developer Bootcamp" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hypothesis *</label>
+                        <textarea id="op-hypothesis" rows="3" placeholder="We believe that [action] will result in [outcome] because [reason]..." required></textarea>
+                        <small class="text-muted">Describe what you believe will happen and why</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Link to Budget Lines (Optional)</label>
+                        <select id="op-budget" multiple size="4">
+                            <!-- Populated by JS -->
+                        </select>
+                        <small class="text-muted">Hold Ctrl/Cmd to select multiple. Leave empty if no budget required.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Owner *</label>
+                        <select id="op-owner" required>
+                            <option value="">Select owner...</option>
+                            <option value="Hieu">Hieu</option>
+                            <option value="Linh">Linh</option>
+                            <option value="Fay">Fay</option>
+                            <option value="Sunny">Sunny</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Timeline</label>
+                        <input type="text" id="op-timeline" placeholder="e.g., Jan 1 - Mar 31, 2025">
+                    </div>
+
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;">Key Performance Indicators (KPIs)</h4>
+
+                    <div id="kpi-container">
+                        <div class="kpi-input-group">
+                            <div class="form-group">
+                                <label>KPI Name *</label>
+                                <input type="text" class="kpi-name" placeholder="e.g., Number of Participants" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Target *</label>
+                                <input type="number" class="kpi-target" placeholder="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Unit</label>
+                                <input type="text" class="kpi-unit" placeholder="people, projects, %">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary btn-sm" id="add-kpi-btn" style="margin-bottom: 15px;">+ Add Another KPI</button>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Operation</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Create New Workspace (Budget + Operation Pair) -->
+    <div id="create-workspace-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Create New Budget & Operation Pair</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted" style="margin-bottom: 20px;">
+                    Create a new planning cycle with its own budget and operations.
+                    Each pair represents a distinct planning period (e.g., Q1 2025, Annual 2025).
+                </p>
+
+                <form id="create-workspace-form">
+                    <!-- Workspace Info -->
+                    <h4 style="margin-bottom: 15px; color: #667eea;">📋 Planning Cycle Info</h4>
+
+                    <div class="form-group">
+                        <label>Workspace Name *</label>
+                        <input type="text" id="ws-name" placeholder="e.g., Superteam VN Q2 2025" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Period Label *</label>
+                        <input type="text" id="ws-period" placeholder="e.g., Q2 2025, Annual 2025" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Start Date *</label>
+                            <input type="date" id="ws-start-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>End Date *</label>
+                            <input type="date" id="ws-end-date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Total Budget *</label>
+                        <input type="number" id="ws-total-budget" placeholder="500000" required>
+                    </div>
+
+                    <!-- Operation Hypothesis -->
+                    <h4 style="margin-top: 30px; margin-bottom: 15px; color: #667eea;">🎯 Primary Operation Hypothesis</h4>
+
+                    <div class="form-group">
+                        <label>Operation Code *</label>
+                        <input type="text" id="ws-op-code" placeholder="e.g., OP-MAIN-Q2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Operation Name *</label>
+                        <input type="text" id="ws-op-name" placeholder="e.g., Community Growth Initiative" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hypothesis Statement *</label>
+                        <textarea id="ws-op-hypothesis" rows="3" placeholder="We believe that [action] will result in [outcome] because [reason]..." required></textarea>
+                        <small class="text-muted">Describe the core hypothesis driving this planning cycle</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Owner *</label>
+                        <select id="ws-op-owner" required>
+                            <option value="">Select owner...</option>
+                            <option value="Hieu">Hieu</option>
+                            <option value="Linh">Linh</option>
+                            <option value="Fay">Fay</option>
+                            <option value="Sunny">Sunny</option>
+                        </select>
+                    </div>
+
+                    <!-- Primary KPI -->
+                    <h4 style="margin-top: 20px; margin-bottom: 10px;">Key Performance Indicators</h4>
+                    <div id="ws-kpi-container">
+                        <div class="kpi-input-group">
+                            <div class="form-group">
+                                <label>KPI Name *</label>
+                                <input type="text" class="ws-kpi-name" placeholder="e.g., Community Members" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Target *</label>
+                                <input type="number" class="ws-kpi-target" placeholder="1000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Unit</label>
+                                <input type="text" class="ws-kpi-unit" placeholder="people, projects, %">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary btn-sm" id="ws-add-kpi-btn" style="margin-bottom: 15px;">+ Add Another KPI</button>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Budget & Operation Pair</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
