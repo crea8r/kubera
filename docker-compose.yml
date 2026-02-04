@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: localtestdev
+      POSTGRES_DB: kubera
+    ports:
+      - "5432:5432"
+    volumes:
+      - kubera_pg:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./backend
+    environment:
+      PORT: 4000
+      NODE_ENV: development
+      LOG_LEVEL: info
+      JWT_SECRET: dev-only-change-me-please-dev-only-change-me
+      DATABASE_URL: postgresql://postgres:localtestdev@db:5432/kubera?schema=public
+      FYSTACK_BASE_URL: https://api.fystack.io
+      # Set these in your shell or an .env file (NOT committed)
+      FYSTACK_API_KEY: ${FYSTACK_API_KEY}
+      FYSTACK_SECRET_KEY: ${FYSTACK_SECRET_KEY}
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    command: sh -c "npm run prisma:deploy && node dist/server.js"
+
+volumes:
+  kubera_pg:
