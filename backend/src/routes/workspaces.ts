@@ -22,17 +22,40 @@ const workspaceRoutes: FastifyPluginAsync = async (app) => {
     const body = z
       .object({
         name: z.string().min(1),
-        startDate: z.string().datetime(),
-        endDate: z.string().datetime(),
+        year: z.coerce.number().int().min(1970).max(2100).optional(),
+        startDate: z.string().datetime().optional(),
+        endDate: z.string().datetime().optional(),
         currency: z.string().min(3).max(8).default('USD')
       })
+      .refine((v) => v.year || (v.startDate && v.endDate), {
+        message: 'Provide either year or (startDate,endDate)'
+      })
       .parse(req.body);
+
+    const year = body.year ?? new Date(body.startDate!).getUTCFullYear();
+    const start = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
+    const end = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 999));
+
+    // If caller provided dates, enforce annual-only.
+    if (body.startDate && body.endDate) {
+      const s = new Date(body.startDate);
+      const e = new Date(body.endDate);
+      const same = s.getTime() === start.getTime() && e.getTime() === end.getTime();
+      if (!same) {
+        return reply.status(400).send(
+          fail(
+            'ANNUAL_ONLY',
+            `Annual budgets only. Expected start=${start.toISOString()} end=${end.toISOString()}`
+          )
+        );
+      }
+    }
 
     const workspace = await prisma.workspace.create({
       data: {
         name: body.name,
-        startDate: new Date(body.startDate),
-        endDate: new Date(body.endDate),
+        startDate: start,
+        endDate: end,
         currency: body.currency,
         members: {
           create: {
@@ -42,9 +65,9 @@ const workspaceRoutes: FastifyPluginAsync = async (app) => {
         },
         cycles: {
           create: {
-            name: 'Initial',
-            startDate: new Date(body.startDate),
-            endDate: new Date(body.endDate),
+            name: `Annual ${year}`,
+            startDate: start,
+            endDate: end,
             isActive: true
           }
         }

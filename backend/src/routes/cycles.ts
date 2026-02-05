@@ -10,32 +10,14 @@ async function requireMembership(userId: string, workspaceId: string) {
 }
 
 const cycleRoutes: FastifyPluginAsync = async (app) => {
+  // Kubera constraint: one budget = one annual cycle. No additional cycles.
   app.post('/workspaces/:workspaceId/cycles', { preHandler: app.auth }, async (req: any, reply) => {
-    const { workspaceId } = req.params as { workspaceId: string };
-    const me = await requireMembership(req.user.sub, workspaceId);
-    if (!me || (me.role !== 'owner' && me.role !== 'admin')) {
-      return reply.status(403).send(fail('FORBIDDEN', 'Insufficient role'));
-    }
-
-    const body = z
-      .object({ name: z.string().min(1), startDate: z.string().datetime(), endDate: z.string().datetime(), isActive: z.boolean().default(false) })
-      .parse(req.body);
-
-    const cycle = await prisma.planningCycle.create({
-      data: {
-        workspaceId,
-        name: body.name,
-        startDate: new Date(body.startDate),
-        endDate: new Date(body.endDate),
-        isActive: body.isActive
-      }
-    });
-
-    if (cycle.isActive) {
-      await prisma.planningCycle.updateMany({ where: { workspaceId, id: { not: cycle.id } }, data: { isActive: false } });
-    }
-
-    return reply.status(201).send(ok(cycle));
+    return reply.status(400).send(
+      fail(
+        'ANNUAL_ONLY',
+        'Kubera currently supports annual budgets only (1 active cycle per workspace). Create a new workspace for a new year.'
+      )
+    );
   });
 
   app.get('/cycles/:cycleId', { preHandler: app.auth }, async (req: any, reply) => {
