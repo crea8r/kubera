@@ -56,6 +56,7 @@ const cycleRoutes: FastifyPluginAsync = async (app) => {
         code: z.string().min(1),
         name: z.string().min(1),
         allocatedUsd: z.coerce.number().nonnegative(),
+        notes: z.string().optional(),
         parentId: z.string().uuid().optional(),
         pic: z.string().optional(),
         operationIds: z.array(z.string().uuid()).default([])
@@ -68,6 +69,7 @@ const cycleRoutes: FastifyPluginAsync = async (app) => {
         code: body.code,
         name: body.name,
         allocatedUsd: body.allocatedUsd,
+        notes: body.notes,
         parentId: body.parentId,
         pic: body.pic,
         links: {

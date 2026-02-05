@@ -107,6 +107,7 @@ model BudgetLine {
   code         String
   name         String
   allocatedUsd Decimal  @db.Decimal(18, 6)
+  notes        String?
   parentId     String?
   pic          String?
   createdAt    DateTime @default(now())
