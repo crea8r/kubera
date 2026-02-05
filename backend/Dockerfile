@@ -11,5 +11,5 @@ COPY tsconfig.json ./
 COPY src ./src
 RUN npm run build
 
-EXPOSE 4000
+EXPOSE 29001
 CMD ["node", "dist/server.js"]

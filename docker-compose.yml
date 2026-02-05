@@ -14,7 +14,7 @@ services:
     build:
       context: ./backend
     environment:
-      PORT: 4000
+      PORT: 29001
       NODE_ENV: development
       LOG_LEVEL: info
       JWT_SECRET: dev-only-change-me-please-dev-only-change-me
@@ -24,7 +24,7 @@ services:
       FYSTACK_API_KEY: ${FYSTACK_API_KEY}
       FYSTACK_SECRET_KEY: ${FYSTACK_SECRET_KEY}
     ports:
-      - "4000:4000"
+      - "29001:29001"
     depends_on:
       - db
     command: sh -c "npm run prisma:deploy && node dist/server.js"

@@ -34,8 +34,8 @@ npm run dev
 ```
 
 API:
-- Health: `GET http://localhost:4000/health`
-- Swagger UI: `http://localhost:4000/docs`
+- Health: `GET http://localhost:29001/health`
+- Swagger UI: `http://localhost:29001/docs`
 
 ## Fystack integration (MVP)
 
