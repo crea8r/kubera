@@ -4,6 +4,18 @@ This repo currently contains:
 - `mock/` — the interactive HTML mock
 - `docs/` — product + technical docs
 - `backend/` — **real API server** (Fastify + Prisma + Postgres)
+- `frontend/` — **React (Vite) frontend** based on the mock
+
+## Frontend quickstart
+
+```bash
+cd frontend
+cp .env.example .env
+npm install
+npm run dev -- --port 29002
+```
+
+Open: `http://localhost:29002`
 
 ## Backend quickstart
 
